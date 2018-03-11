@@ -218,6 +218,8 @@ class Trainer(object):
                                                                       loss=losses))
             else:
                 loader.set_postfix(loss=losses.val)
+            if self.output['checkpoint_interval'] > 0 and (i % self.output['checkpoint_interval']) == 0:
+                torch.save(SpeechModel.serialize(model, optimizer=optimizer, epoch=epoch, iteration=i), self.output['model_path']+".ckpt")
         return losses.avg
 
     @classmethod
